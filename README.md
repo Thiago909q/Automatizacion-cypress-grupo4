@@ -76,4 +76,3 @@ La suite `cypress/e2e/services.cy.js` incluye seis pruebas:
 5. Filtro por rango de precios.
 6. Ordenamiento por precio ascendente.
 
-Los selectores y las acciones reutilizables están separados de los casos de prueba mediante `ServicesPage`. Los métodos, variables y nombres de las pruebas siguen la convención en inglés donde corresponde; los textos de la interfaz se mantienen en español para validar el contenido real de la aplicación.
