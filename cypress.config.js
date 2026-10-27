@@ -2,6 +2,7 @@ const { defineConfig } = require("cypress");
 const { baseUrl } = require("./scripts/settings.cjs");
 
 module.exports = defineConfig({
+  projectId: 'n79m6d',
   viewportWidth: 1366,
   viewportHeight: 900,
   screenshotOnRunFailure: true,

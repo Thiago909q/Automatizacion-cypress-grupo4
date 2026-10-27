@@ -24,7 +24,7 @@ try {
   }
   if (!fs.existsSync(databasePath)) fs.closeSync(fs.openSync(databasePath, 'w'));
   run(phpBinary, ['artisan', 'migrate', '--force', '--no-interaction'], env);
-  console.log('\nAplicación preparada. Ejecutá npm test desde el repositorio de automatización.');
+  console.log('\nAplicación SQLite preparada. Ejecutá node scripts/run-tests.cjs desde el repositorio de automatización.');
 } catch (error) {
   console.error(error.message);
   process.exitCode = 1;

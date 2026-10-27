@@ -8,15 +8,15 @@ function applyAppPatch() {
     throw new Error(`No se encontró Laravel en ${appPath}. Configurá APP_PATH en .env.`);
   }
   const patch = path.join(root, 'patches/prolink-pom.patch');
-  const check = spawnSync('git', ['apply', '--check', patch], { cwd: appPath, encoding: 'utf8' });
+  const check = spawnSync('git', ['apply', '--check', '--ignore-space-change', patch], { cwd: appPath, encoding: 'utf8' });
   if (check.error) throw check.error;
   if (check.status === 0) {
-    const applied = spawnSync('git', ['apply', patch], { cwd: appPath, encoding: 'utf8' });
+    const applied = spawnSync('git', ['apply', '--ignore-space-change', patch], { cwd: appPath, encoding: 'utf8' });
     if (applied.status !== 0) throw new Error(applied.stderr || 'No se pudo aplicar el parche.');
     console.log('Aplicados los selectores de autenticación y la corrección del formulario de perfil.');
     return;
   }
-  const alreadyApplied = spawnSync('git', ['apply', '--reverse', '--check', patch], { cwd: appPath, encoding: 'utf8' });
+  const alreadyApplied = spawnSync('git', ['apply', '--reverse', '--check', '--ignore-space-change', patch], { cwd: appPath, encoding: 'utf8' });
   if (alreadyApplied.status === 0) {
     console.log('El parche de la aplicación ya estaba aplicado.');
     return;
