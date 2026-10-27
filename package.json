@@ -1,16 +1,32 @@
 {
   "name": "automatizacion-cypress-grupo4",
   "version": "1.0.0",
-  "description": "",
+  "description": "Pruebas de login, registro y perfil de Thiago Alonso",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "setup:app": "node scripts/prepare-app.cjs",
+    "patch:app": "node scripts/apply-app-patch.cjs",
+    "start:app": "node scripts/start-app.cjs",
+    "test": "node scripts/run-tests.cjs",
+    "test:open": "node scripts/run-tests.cjs --open",
+    "test:login": "node scripts/run-tests.cjs --spec cypress/e2e/login.cy.js",
+    "test:register": "node scripts/run-tests.cjs --spec cypress/e2e/register.cy.js",
+    "test:profile": "node scripts/run-tests.cjs --spec cypress/e2e/user-profile.cy.js",
+    "test:dashboard": "node scripts/run-tests.cjs --spec cypress/e2e/dashboard.cy.js",
+    "cy:verify": "cypress verify",
+    "cy:run": "cypress run"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
-    "cypress": "^16.2.0"
+    "cypress": "16.2.0",
+    "dotenv": "17.2.3",
+    "cross-spawn": "7.0.6"
+  },
+  "private": true,
+  "engines": {
+    "node": "^22.0.0 || ^24.0.0 || >=26.0.0"
   }
 }
