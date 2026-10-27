@@ -51,12 +51,19 @@ En `main` se mantiene la configuración general del repositorio. Consultar el RE
 
 En mi rama `Automatizacion-thiago-alonso` desarrollé estos cuatro POMs. Están en `cypress/support/pages`, con selectores privados centralizados y acciones que devuelven cadenas de Cypress con el POM actual o siguiente. Los tests contienen las assertions y los nombres del código están en inglés.
 
-| POM (autor: Thiago Alonso) | Spec | Casos |
+| POM (autor: Thiago Alonso) | Spec | Cantidad |
 | --- | --- | --- |
-| `LoginPage.js` | `login.cy.js` | Login correcto, contraseña incorrecta, campos obligatorios y mostrar/ocultar contraseña (4). |
-| `RegisterPage.js` | `register.cy.js` | Registro correcto, confirmación distinta, contraseña débil y correo repetido (4). |
-| `UserProfilePage.js` | `user-profile.cy.js` | Guardar nombre y conservarlo al recargar, correo enmascarado y deshabilitado, rechazar números conservando el nombre original y acceso sin sesión (4). |
-| `DashboardPage.js` | `dashboard.cy.js` | Impedir acceso sin sesión y cerrar sesión comprobando que el panel quede protegido (2). |
+| `LoginPage.js` | `login.cy.js` | 9 |
+| `RegisterPage.js` | `register.cy.js` | 16 |
+| `UserProfilePage.js` | `user-profile.cy.js` | 12 |
+| `DashboardPage.js` | `dashboard.cy.js` | 6 |
+
+Son **43 casos en total**. Amplié las pruebas para cubrir datos inválidos, valores límite y qué pasa después de corregir un error:
+
+- **Login:** credenciales correctas, contraseña incorrecta, campos obligatorios, mostrar y ocultar contraseña, correo sin cuenta, correo incompleto, correo con mayúsculas y espacios, acceso al login con sesión iniciada y volver a intentar después de una contraseña incorrecta.
+- **Registro:** registro correcto, confirmación distinta, contraseña débil, correo repetido, campos vacíos, correo incompleto, nombre con números o demasiado corto, contraseña de menos de 8 caracteres o sin mayúscula, minúscula o número, contraseña válida de exactamente 8 caracteres, normalización de nombre y correo, visibilidad independiente de las dos contraseñas y acceso al registro con sesión iniciada.
+- **Perfil:** guardar y recargar, correo enmascarado y deshabilitado, rechazar números, acceso sin sesión, nombres de solo espacios, de 1 carácter o de más de 100, aceptar los límites de 2 y 100 caracteres, tildes y signos permitidos, normalización de espacios y corregir un nombre inválido. También compruebo que al guardar se envíe solo `name`.
+- **Dashboard:** acceso sin sesión, protección después del logout, saludo del usuario conectado, panel personal, sesión al recargar, navegación al perfil y protección del perfil después de cerrar sesión.
 
 ## 1. Preparar ProLink
 
@@ -131,9 +138,22 @@ Para abrir la interfaz contra el mismo servidor:
 npm run test:open
 ```
 
-Al ejecutar `npm test` obtuve: Dashboard 2/2, Login 4/4, Registro 4/4 y Perfil 4/4. Total: **14 aprobados, 0 fallidos, 0 pendientes y 0 omitidos**, en 28 segundos, con `All specs passed!`. La advertencia de deprecación de Electron no impidió completar la ejecución. Los tests crean usuarios con correos únicos y modifican el perfil de esos usuarios.
+Los tests crean usuarios con correos únicos y modifican solamente el perfil de esos usuarios. No necesitan cuentas demo ni borrar datos existentes.
 
 Los comandos `npm test` y `npm run test:open` ya apuntan a `http://127.0.0.1:8000`. Usan ProLink con PostgreSQL y requieren que la aplicación esté iniciada. No hace falta indicar la URL en cada ejecución ni crear un `.env` en automatización.
+
+Para ejecutar un grupo por separado:
+
+```cmd
+npm run test:login
+npm run test:register
+npm run test:profile
+npm run test:dashboard
+```
+
+## Resultado
+
+Al ejecutar `npm test` pasaron **43 de 43 casos**: Dashboard 6/6, Login 9/9, Registro 16/16 y Perfil 12/12. Cypress mostró `All specs passed!`, sin fallidos, pendientes ni omitidos, en 1 minuto y 22 segundos. La advertencia de deprecación de Electron no impidió completar las pruebas.
 
 ## Repositorios
 

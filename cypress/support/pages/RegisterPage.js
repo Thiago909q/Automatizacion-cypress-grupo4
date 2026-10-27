@@ -9,11 +9,13 @@ export class RegisterPage {
     submit: 'form button[type="submit"]',
     emailError: '[data-testid="register-email-error"]',
     passwordError: '[data-testid="register-password-error"]',
+    nameError: '#name ~ p.text-red-600',
+    passwordToggle: 'button[aria-label="Mostrar contraseña"], button[aria-label="Ocultar contraseña"]',
+    confirmationToggle: 'button[aria-label="Mostrar confirmación de contraseña"], button[aria-label="Ocultar confirmación de contraseña"]',
   };
 
   visit() {
-    cy.visit('/register');
-    return this.waitUntilLoaded();
+    return cy.visit('/register').then(() => this);
   }
 
   waitUntilLoaded() {
@@ -23,10 +25,7 @@ export class RegisterPage {
 
   submit(user) {
     cy.intercept('POST', '**/register').as('registerRequest');
-    cy.get(this.#selectors.name).clear().type(user.name);
-    cy.get(this.#selectors.email).clear().type(user.email);
-    cy.get(this.#selectors.password).clear().type(user.password, { log: false });
-    cy.get(this.#selectors.passwordConfirmation).clear().type(user.passwordConfirmation ?? user.password, { log: false });
+    this.fill(user);
     cy.get(this.#selectors.submit).click();
     cy.wait('@registerRequest');
     return cy.wrap(this, { log: false });
@@ -37,7 +36,34 @@ export class RegisterPage {
     return new DashboardPage().waitUntilLoaded();
   }
 
+  fill(user) {
+    const values = {
+      name: user.name ?? '',
+      email: user.email ?? '',
+      password: user.password ?? '',
+      passwordConfirmation: user.passwordConfirmation ?? user.password ?? '',
+    };
+    for (const [field, value] of Object.entries(values)) {
+      cy.get(this.#selectors[field]).clear();
+      if (value) cy.get(this.#selectors[field]).type(value, { log: !field.startsWith('password') });
+    }
+    return cy.wrap(this, { log: false });
+  }
+
+  togglePasswordVisibility() {
+    cy.get(this.#selectors.passwordToggle).click();
+    return cy.wrap(this, { log: false });
+  }
+
+  toggleConfirmationVisibility() {
+    cy.get(this.#selectors.confirmationToggle).click();
+    return cy.wrap(this, { log: false });
+  }
+
   emailError() { return cy.get(this.#selectors.emailError); }
   passwordError() { return cy.get(this.#selectors.passwordError); }
   nameField() { return cy.get(this.#selectors.name); }
+  nameError() { return cy.get(this.#selectors.nameError); }
+  passwordField() { return cy.get(this.#selectors.password); }
+  confirmationField() { return cy.get(this.#selectors.passwordConfirmation); }
 }
