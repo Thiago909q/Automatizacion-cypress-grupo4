@@ -1,0 +1,2 @@
+# Los parches conservan espacios de contexto del formato diff.
+*.patch -whitespace

@@ -28,3 +28,10 @@ Homestead.json
 .env.production
 .phpactor.json
 auth.json
+
+# Archivos locales de automatización
+.runtime/
+cypress/screenshots/
+cypress/videos/
+cypress/downloads/
+*.log

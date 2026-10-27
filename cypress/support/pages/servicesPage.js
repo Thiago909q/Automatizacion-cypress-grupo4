@@ -1,42 +1,58 @@
 class ServicesPage {
+  #selectors = {
+    heading: 'main h1',
+    cards: 'main a[href^="/services/"]:not([href*="/browse"])',
+    search: 'input[name="search"]',
+    category: 'select[name="category"]',
+    minimumPrice: 'input[name="min_price"]',
+    maximumPrice: 'input[name="max_price"]',
+    priceOptions: 'summary#price',
+    sort: 'select[name="sort"]',
+    submit: 'main form button[type="submit"]',
+  };
+
   visitCatalog() {
-    cy.visit("/services/browse?location_mode=none");
+    return cy.visit("/services/browse?location_mode=none&view=list").then(() => this);
   }
 
   heading() {
-    return cy.get("main h1");
+    return cy.get(this.#selectors.heading);
   }
 
   cards() {
-    return cy.get('a[href^="/services/"]:not([href*="/browse"])');
+    return cy.get(this.#selectors.cards);
   }
 
   searchField() {
-    return cy.get('input[name="search"]');
+    return cy.get(this.#selectors.search);
   }
 
   categoryField() {
-    return cy.get('select[name="category"]');
+    return cy.get(this.#selectors.category);
   }
 
   minimumPriceField() {
-    return cy.get('input[name="min_price"]');
+    return cy.get(this.#selectors.minimumPrice);
   }
 
   maximumPriceField() {
-    return cy.get('input[name="max_price"]');
+    return cy.get(this.#selectors.maximumPrice);
   }
 
   openPriceOptions() {
-    cy.contains("Cualquier precio").click();
+    return cy.get(this.#selectors.priceOptions).click().then(() => this);
   }
 
   sortField() {
-    return cy.get('select[name="sort"]');
+    return cy.get(this.#selectors.sort);
   }
 
   submitSearch() {
-    cy.get('button[type="submit"]').contains("Buscar").click();
+    cy.intercept('GET', '**/services/browse*').as('filterServices');
+    cy.contains(this.#selectors.submit, 'Buscar').click();
+    cy.wait('@filterServices');
+    cy.get(this.#selectors.submit).should('not.be.disabled');
+    return cy.wrap(this, { log: false });
   }
 }
 
