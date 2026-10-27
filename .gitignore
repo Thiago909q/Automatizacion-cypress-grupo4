@@ -2,6 +2,12 @@
 node_modules/
 npm-debug.log
 yarn-error.log
+cypress/screenshots/
+cypress/videos/
+cypress.env.json
+cypress.env.*.json
+.env.local
+.env.*.local
 
 # Laravel 4 specific
 bootstrap/compiled.php

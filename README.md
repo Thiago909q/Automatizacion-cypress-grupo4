@@ -45,3 +45,5 @@ Las suites que dependen de una aplicación local requieren que el servidor esté
 Cada integrante puede desarrollar y documentar sus pruebas en su propia rama. El README de esa rama debe identificar los autores y POMs incluidos, describir los casos cubiertos y detallar cualquier requisito adicional de la aplicación bajo prueba.
 
 En `main` se mantiene la configuración general del repositorio. Consultar el README de la rama de trabajo para conocer el alcance específico de sus pruebas.
+
+La suite de reseñas disponible en esta copia está documentada en [README-reviews.md](README-reviews.md).
