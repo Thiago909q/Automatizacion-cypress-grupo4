@@ -58,7 +58,7 @@ Configura el archivo `.env`, la base de datos y los datos de prueba de acuerdo c
 
 Cypress usa `http://127.0.0.1:8000` como `baseUrl` (`cypress.config.js`). No cierres el servidor del Marketplace mientras corren las pruebas.
 
-## Casos cubiertos
+## Tiago puñal parte
 
 La suite `cypress/e2e/services.cy.js` contiene seis pruebas:
 
